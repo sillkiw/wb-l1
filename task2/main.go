@@ -2,21 +2,20 @@ package main
 
 import (
 	"fmt"
-	"time"
+	"sync"
 )
 
-func evSquare(a []int, i int) {
-	for _, el := range a {
-		fmt.Printf("%d^2 = %d, выведено с горутины %d\n", el, el*el, i)
-		time.Sleep(time.Microsecond)
-	}
-}
-
 func main() {
-	var a = []int{2, 4, 6, 8, 10}
+	nums := []int{2, 4, 6, 8, 10}
+	var wg sync.WaitGroup
 
-	for i := 1; i <= 3; i++ {
-		go evSquare(a, i)
+	for _, n := range nums {
+		wg.Add(1)
+		go func(x int) {
+			defer wg.Done()
+			fmt.Println(x * x)
+		}(n)
 	}
-	time.Sleep(1 * time.Second)
+
+	wg.Wait()
 }
