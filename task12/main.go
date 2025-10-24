@@ -19,5 +19,4 @@ func main() {
 	ts := []string{"cat", "cat", "dog", "cat", "tree"}
 
 	fmt.Println(ownSubset(ts))
-
 }
