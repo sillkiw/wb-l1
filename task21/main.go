@@ -6,19 +6,16 @@ import (
 
 func main() {
 	c1 := &digitalClock{src: format24{23, 5}}
-	c1.showTime()
+	c1.ShowTime()
 
+	// Применение адаптера для digitalClock
 	twelveAm := format12{1, 35, "AM"}
 	clc := &digitalClock{src: format12Adapter{twelveAm}}
-	clc.showTime()
+	clc.ShowTime()
 }
 
 type time24Format interface {
 	Extract() string
-}
-
-type Clock interface {
-	ShowTime()
 }
 
 // digitalClock работает только с time24Format
@@ -26,10 +23,11 @@ type digitalClock struct {
 	src time24Format
 }
 
-func (c *digitalClock) showTime() {
+func (c *digitalClock) ShowTime() {
 	fmt.Println(c.src.Extract())
 }
 
+// format24 - структура удовлет. интерфейсу time24Format
 type format24 struct {
 	Hour int
 	Min  int
@@ -39,6 +37,7 @@ func (f format24) Extract() string {
 	return fmt.Sprintf("%02d:%02d", f.Hour, f.Min)
 }
 
+// format12 - структура не удовлт. интерфейсу
 type format12 struct {
 	Hour int
 	Min  int
